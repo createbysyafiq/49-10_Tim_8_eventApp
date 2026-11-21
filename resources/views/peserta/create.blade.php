@@ -12,7 +12,7 @@
 
         <form action="{{ route('peserta.store') }}" method="POST" class="space-y-4">
             @csrf
-
+<!-- FORM CREATE PESERTA -->
             <!-- Pilih Tiket -->
             <div>
                 <label for="id_tiket" class="block font-semibold text-xs text-gray-700 mb-1">Pilih Kategori Tiket Workshop:</label>
