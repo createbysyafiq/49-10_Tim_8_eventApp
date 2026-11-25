@@ -28,7 +28,7 @@ class TicketPolicy
      */
     public function create(User $user): bool
     {
-        return in_array($user->role, ['admin', 'panitia'], true);
+        return $user->role === 'admin';
     }
 
     /**
@@ -36,7 +36,7 @@ class TicketPolicy
      */
     public function update(User $user, Ticket $ticket): bool
     {
-        return in_array($user->role, ['admin', 'panitia'], true);
+        return $user->role === 'admin';
     }
 
     /**

@@ -78,8 +78,8 @@
                 @enderror
             </div>
 
-            <!-- Status Pembayaran (Bisa diatur Admin / Panitia) -->
-            @if(in_array(Auth::user()->role ?? '', ['admin', 'panitia']))
+            <!-- Status Pembayaran (Bisa diatur Admin) -->
+            @if((Auth::user()->role ?? '') === 'admin')
             <div>
                 <label for="status_pembayaran" class="block font-semibold text-xs text-gray-700 mb-1">Status Pembayaran (Otoritas Pengelola):</label>
                 <select name="status_pembayaran" id="status_pembayaran" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">

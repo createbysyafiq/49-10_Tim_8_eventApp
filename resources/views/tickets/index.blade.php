@@ -5,7 +5,7 @@
 @section('content')
 <div class="max-w-4xl mx-auto space-y-8 my-4">
 
-    <!-- Card 1: Form Pengelolaan Tiket (Hanya Tampil Bagi Admin & Panitia) -->
+    <!-- Card 1: Form Pengelolaan Tiket (Hanya Tampil Bagi Admin) -->
     @can('create', App\Models\Ticket::class)
     <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100">
         <div class="flex justify-between items-center mb-6">
@@ -14,7 +14,7 @@
                 <p class="text-xs text-gray-500 mt-0.5">Tambah kategori tiket baru untuk peserta event</p>
             </div>
             <span class="bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded border border-blue-200">
-                Akses: Admin &amp; Panitia
+                Akses: Admin
             </span>
         </div>
         
@@ -88,7 +88,7 @@
     <!-- Informasi Pembatasan Akses untuk Peserta -->
     <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl text-xs text-blue-800 flex justify-between items-center">
         <div>
-            <strong>Perhatian (Role Peserta):</strong> Anda sedang melihat katalog tiket workshop. Fitur tambah, edit, dan hapus tiket dibatasi hanya untuk Panitia dan Administrator.
+            <strong>Perhatian (Role Peserta):</strong> Anda sedang melihat katalog tiket workshop. Fitur tambah, edit, dan hapus tiket dibatasi hanya untuk Administrator.
         </div>
         <a href="{{ route('peserta.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-3 py-1.5 rounded shadow text-xs whitespace-nowrap">
             Daftar Tiket Sekarang &rarr;

@@ -46,8 +46,6 @@
                             </span>
                             @if(Auth::user()->role === 'admin')
                                 <span class="bg-rose-100 text-rose-800 text-xs font-semibold px-2 py-0.5 rounded border border-rose-200">Admin</span>
-                            @elseif(Auth::user()->role === 'panitia')
-                                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded border border-blue-200">Panitia</span>
                             @else
                                 <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2 py-0.5 rounded border border-emerald-200">Peserta</span>
                             @endif

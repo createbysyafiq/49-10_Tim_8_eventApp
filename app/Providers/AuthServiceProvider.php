@@ -40,9 +40,9 @@ class AuthServiceProvider extends ServiceProvider
             return $user->role === 'admin';
         });
 
-        // Gate 2: Mengelola operasional workshop (Admin dan Panitia)
+        // Gate 2: Mengelola operasional workshop (khusus Admin)
         Gate::define('manage-all', function (User $user) {
-            return in_array($user->role, ['admin', 'panitia'], true);
+            return $user->role === 'admin';
         });
 
         // Gate 3: Otorisasi khusus penghapusan data krusial (hanya Admin)

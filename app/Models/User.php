@@ -53,11 +53,6 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
-    public function isPanitia(): bool
-    {
-        return $this->role === 'panitia';
-    }
-
     public function isPeserta(): bool
     {
         return $this->role === 'peserta';

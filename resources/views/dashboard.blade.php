@@ -21,10 +21,6 @@
                 <span class="bg-rose-100 text-rose-800 text-xs font-bold px-3 py-1 rounded-full border border-rose-200">
                     ADMINISTRATOR
                 </span>
-            @elseif(($user->role ?? '') === 'panitia')
-                <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full border border-blue-200">
-                    PANITIA PELAKSANA
-                </span>
             @else
                 <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full border border-emerald-200">
                     PESERTA WORKSHOP
@@ -75,7 +71,7 @@
                     <a href="{{ route('events.index') }}" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-1.5 rounded shadow-sm">
                         Buka Event &rarr;
                     </a>
-                    @if(in_array($user->role ?? '', ['admin', 'panitia']))
+                    @if(($user->role ?? '') === 'admin')
                         <a href="{{ route('events.create') }}" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 text-xs font-medium px-3 py-1.5 rounded">
                             + Tambah Event
                         </a>
@@ -99,7 +95,7 @@
                     <a href="{{ route('speakers.index') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3 py-1.5 rounded shadow-sm">
                         Buka Pembicara &rarr;
                     </a>
-                    @if(in_array($user->role ?? '', ['admin', 'panitia']))
+                    @if(($user->role ?? '') === 'admin')
                         <a href="{{ route('speakers.create') }}" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 text-xs font-medium px-3 py-1.5 rounded">
                             + Tambah Speaker
                         </a>
@@ -123,7 +119,7 @@
                     <a href="{{ route('tickets.index') }}" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold px-3 py-1.5 rounded shadow-sm">
                         Buka Modul Tiket &rarr;
                     </a>
-                    @if(in_array($user->role ?? '', ['admin', 'panitia']))
+                    @if(($user->role ?? '') === 'admin')
                         <a href="{{ route('tickets.create') }}" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 text-xs font-medium px-3 py-1.5 rounded">
                             + Tambah Tiket
                         </a>

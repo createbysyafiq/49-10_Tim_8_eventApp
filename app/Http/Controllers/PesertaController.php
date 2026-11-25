@@ -14,7 +14,7 @@ class PesertaController extends Controller
         $user = Auth::user();
 
         // RBAC & ABAC: Peserta hanya melihat data pendaftaran miliknya sendiri.
-        // Admin & Panitia dapat melihat seluruh pendaftar.
+        // Admin dapat melihat seluruh pendaftar.
         if ($user->isPeserta()) {
             $pesertas = Peserta::with('ticket')
                 ->where(function ($query) use ($user) {

@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Akun Pengguna (Role: Admin, Panitia, Peserta, Akun Nonaktif)
+        // 1. Akun Pengguna (Role: Admin, Peserta, Akun Nonaktif)
         $admin = User::updateOrCreate(
             ['email' => 'admin@event.test'],
             [
@@ -26,18 +26,6 @@ class DatabaseSeeder extends Seeder
                 'prodi'     => 'S1 Sistem Informasi',
                 'password'  => Hash::make('password123'),
                 'role'      => 'admin',
-                'is_active' => true,
-            ]
-        );
-
-        $panitia = User::updateOrCreate(
-            ['email' => 'panitia@event.test'],
-            [
-                'nama'      => 'Panitia Pelaksana',
-                'nim'       => '102022400002',
-                'prodi'     => 'S1 Informatika',
-                'password'  => Hash::make('password123'),
-                'role'      => 'panitia',
                 'is_active' => true,
             ]
         );

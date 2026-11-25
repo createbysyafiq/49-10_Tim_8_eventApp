@@ -19,12 +19,12 @@ class SpeakerPolicy
 
     public function create(User $user): bool
     {
-        return in_array($user->role, ['admin', 'panitia'], true);
+        return $user->role === 'admin';
     }
 
     public function update(User $user, Speaker $speaker): bool
     {
-        return in_array($user->role, ['admin', 'panitia'], true);
+        return $user->role === 'admin';
     }
 
     public function delete(User $user, Speaker $speaker): bool

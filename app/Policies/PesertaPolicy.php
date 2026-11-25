@@ -17,11 +17,11 @@ class PesertaPolicy
 
     /**
      * Determine whether the user can view the model.
-     * Ownership check: Admin & Panitia can view all; Peserta can only view their own.
+     * Ownership check: Admin can view all; Peserta can only view their own.
      */
     public function view(User $user, Peserta $peserta): bool
     {
-        if (in_array($user->role, ['admin', 'panitia'], true)) {
+        if ($user->role === 'admin') {
             return true;
         }
 
@@ -38,11 +38,11 @@ class PesertaPolicy
 
     /**
      * Determine whether the user can update the model.
-     * Ownership check: Admin & Panitia can edit all; Peserta can only edit their own.
+     * Ownership check: Admin can edit all; Peserta can only edit their own.
      */
     public function update(User $user, Peserta $peserta): bool
     {
-        if (in_array($user->role, ['admin', 'panitia'], true)) {
+        if ($user->role === 'admin') {
             return true;
         }
 

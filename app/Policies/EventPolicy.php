@@ -19,12 +19,12 @@ class EventPolicy
 
     public function create(User $user): bool
     {
-        return in_array($user->role, ['admin', 'panitia'], true);
+        return $user->role === 'admin';
     }
 
     public function update(User $user, Event $event): bool
     {
-        return in_array($user->role, ['admin', 'panitia'], true);
+        return $user->role === 'admin';
     }
 
     public function delete(User $user, Event $event): bool

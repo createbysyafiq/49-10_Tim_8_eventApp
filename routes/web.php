@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
 | Rute dilengkapi dengan Middleware Authentication (auth), Account Status
-| Check (active), dan Role-Based Access Control (role:admin,panitia,peserta).
+| Check (active), dan Role-Based Access Control (role:admin,peserta).
 |
 */
 
@@ -46,64 +46,52 @@ Route::middleware(['auth', 'active'])->group(function () {
     // ----------------------------------------------------
     // Modul A: Master Event
     // ----------------------------------------------------
-    // Read: Semua role yang login (Peserta, Panitia, Admin)
+    // Read: Semua role yang login (Peserta, Admin)
     Route::get('/events', [EventController::class, 'index'])->name('events.index');
     Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show')->whereNumber('event');
 
-    // Create & Update: Hanya Admin dan Panitia
-    Route::middleware('role:admin,panitia')->group(function () {
+    // Create, Update & Delete: Khusus Admin
+    Route::middleware('role:admin')->group(function () {
         Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
         Route::post('/events', [EventController::class, 'store'])->name('events.store');
         Route::get('/events/{event}/edit', [EventController::class, 'edit'])->name('events.edit');
         Route::put('/events/{event}', [EventController::class, 'update'])->name('events.update');
+        Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
     });
-
-    // Delete: Khusus Admin
-    Route::delete('/events/{event}', [EventController::class, 'destroy'])
-        ->middleware('role:admin')
-        ->name('events.destroy');
 
 
     // ----------------------------------------------------
     // Modul B: Pembicara / Speaker
     // ----------------------------------------------------
-    // Read: Semua role yang login
+    // Read: Semua role yang login (Peserta, Admin)
     Route::get('/speakers', [SpeakerController::class, 'index'])->name('speakers.index');
     Route::get('/speakers/{speaker}', [SpeakerController::class, 'show'])->name('speakers.show')->whereNumber('speaker');
 
-    // Create & Update: Hanya Admin dan Panitia
-    Route::middleware('role:admin,panitia')->group(function () {
+    // Create, Update & Delete: Khusus Admin
+    Route::middleware('role:admin')->group(function () {
         Route::get('/speakers/create', [SpeakerController::class, 'create'])->name('speakers.create');
         Route::post('/speakers', [SpeakerController::class, 'store'])->name('speakers.store');
         Route::get('/speakers/{speaker}/edit', [SpeakerController::class, 'edit'])->name('speakers.edit');
         Route::put('/speakers/{speaker}', [SpeakerController::class, 'update'])->name('speakers.update');
+        Route::delete('/speakers/{speaker}', [SpeakerController::class, 'destroy'])->name('speakers.destroy');
     });
-
-    // Delete: Khusus Admin
-    Route::delete('/speakers/{speaker}', [SpeakerController::class, 'destroy'])
-        ->middleware('role:admin')
-        ->name('speakers.destroy');
 
 
     // ----------------------------------------------------
     // Modul C: Tiket & Kategori
     // ----------------------------------------------------
-    // Read: Semua role yang login
+    // Read: Semua role yang login (Peserta, Admin)
     Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
     Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show')->whereNumber('ticket');
 
-    // Create & Update: Hanya Admin dan Panitia
-    Route::middleware('role:admin,panitia')->group(function () {
+    // Create, Update & Delete: Khusus Admin
+    Route::middleware('role:admin')->group(function () {
         Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
         Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
         Route::get('/tickets/{ticket}/edit', [TicketController::class, 'edit'])->name('tickets.edit');
         Route::put('/tickets/{ticket}', [TicketController::class, 'update'])->name('tickets.update');
+        Route::delete('/tickets/{ticket}', [TicketController::class, 'destroy'])->name('tickets.destroy');
     });
-
-    // Delete: Khusus Admin
-    Route::delete('/tickets/{ticket}', [TicketController::class, 'destroy'])
-        ->middleware('role:admin')
-        ->name('tickets.destroy');
 
     // Alias lama /ticket
     Route::get('/ticket', function () {
@@ -120,7 +108,7 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::post('/peserta', [PesertaController::class, 'store'])->name('peserta.store');
     Route::get('/peserta/{peserta}', [PesertaController::class, 'show'])->name('peserta.show');
 
-    // Edit & Update: Divalidasi oleh PesertaPolicy (Owner atau Admin/Panitia)
+    // Edit & Update: Divalidasi oleh PesertaPolicy (Owner atau Admin)
     Route::get('/peserta/{peserta}/edit', [PesertaController::class, 'edit'])->name('peserta.edit');
     Route::put('/peserta/{peserta}', [PesertaController::class, 'update'])->name('peserta.update');
 

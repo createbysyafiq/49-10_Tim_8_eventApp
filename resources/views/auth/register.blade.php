@@ -34,7 +34,6 @@
                 <label for="role" class="block font-semibold text-xs text-gray-700 mb-1">Daftar Sebagai Peran (Role):</label>
                 <select name="role" id="role" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
                     <option value="peserta" {{ old('role') == 'peserta' ? 'selected' : '' }}>Peserta Event (Default)</option>
-                    <option value="panitia" {{ old('role') == 'panitia' ? 'selected' : '' }}>Panitia Penyelenggara</option>
                     <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Administrator</option>
                 </select>
                 <p class="text-[11px] text-gray-400 mt-0.5">Pilih peran sesuai skenario pengujian role access control.</p>

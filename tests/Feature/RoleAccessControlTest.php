@@ -2,22 +2,24 @@
 
 namespace Tests\Feature;
 
-use App\Models\Event;
 use App\Models\Peserta;
-use App\Models\Speaker;
 use App\Models\Ticket;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class RoleAccessControlTest extends TestCase
 {
+    protected User $admin;
+    protected User $peserta;
+    protected User $inactiveUser;
+    protected Ticket $ticket;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        // Siapkan data user uji coba jika belum ada
+        // Siapkan data user uji coba (2 role: admin & peserta)
         $this->admin = User::firstOrCreate(
             ['email' => 'admin_test@event.test'],
             [
@@ -26,18 +28,6 @@ class RoleAccessControlTest extends TestCase
                 'prodi' => 'S1 SI',
                 'password' => Hash::make('password123'),
                 'role' => 'admin',
-                'is_active' => true,
-            ]
-        );
-
-        $this->panitia = User::firstOrCreate(
-            ['email' => 'panitia_test@event.test'],
-            [
-                'nama' => 'Panitia Test',
-                'nim' => '999002',
-                'prodi' => 'S1 IF',
-                'password' => Hash::make('password123'),
-                'role' => 'panitia',
                 'is_active' => true,
             ]
         );
@@ -100,7 +90,6 @@ class RoleAccessControlTest extends TestCase
      */
     public function test_user_can_register_without_nim_and_prodi(): void
     {
-        // Pastikan email belum dipakai
         User::where('email', 'userbaru@event.test')->delete();
 
         $response = $this->post('/register', [
@@ -117,6 +106,7 @@ class RoleAccessControlTest extends TestCase
             'nama' => 'User Baru',
             'nim' => null,
             'prodi' => null,
+            'role' => 'peserta',
         ]);
     }
 
@@ -182,29 +172,32 @@ class RoleAccessControlTest extends TestCase
     }
 
     /**
-     * Rule 8 (RBAC Create Allow): Panitia DISETUJUI menambah tiket baru (302).
+     * Rule 8 (RBAC Delete Deny): Peserta DITOLAK saat mencoba menghapus tiket (403 Forbidden).
      */
-    public function test_panitia_can_store_ticket(): void
+    public function test_peserta_cannot_delete_ticket_returns_403(): void
     {
-        $response = $this->actingAs($this->panitia)->post('/tickets', [
-            'tipe_tiket' => 'Regular Panitia',
+        $response = $this->actingAs($this->peserta)->delete('/tickets/' . $this->ticket->id);
+        $response->assertStatus(403);
+    }
+
+    /**
+     * Rule 9 (RBAC Create Allow): Admin DISETUJUI menambah tiket baru (302).
+     */
+    public function test_admin_can_store_ticket(): void
+    {
+        $response = $this->actingAs($this->admin)->post('/tickets', [
+            'tipe_tiket' => 'Regular Admin Test',
             'harga' => 90000,
             'kuota' => 25,
-            'benefit' => 'Benefit Resmi Panitia',
+            'benefit' => 'Benefit Resmi Admin',
         ]);
 
         $response->assertStatus(302);
         $response->assertRedirect(route('tickets.index'));
-        $this->assertDatabaseHas('tickets', ['tipe_tiket' => 'Regular Panitia']);
-    }
+        $this->assertDatabaseHas('tickets', ['tipe_tiket' => 'Regular Admin Test']);
 
-    /**
-     * Rule 9 (RBAC Delete Deny): Panitia DITOLAK saat mencoba menghapus tiket (403 Forbidden).
-     */
-    public function test_panitia_cannot_delete_ticket_returns_403(): void
-    {
-        $response = $this->actingAs($this->panitia)->delete('/tickets/' . $this->ticket->id);
-        $response->assertStatus(403);
+        // Bersihkan data uji agar tidak menumpuk
+        Ticket::where('tipe_tiket', 'Regular Admin Test')->delete();
     }
 
     /**
@@ -229,7 +222,6 @@ class RoleAccessControlTest extends TestCase
      */
     public function test_peserta_cannot_view_or_edit_other_peserta_submission(): void
     {
-        // Peserta A
         $pesertaA = Peserta::create([
             'user_id' => $this->peserta->id,
             'id_tiket' => $this->ticket->id,
@@ -239,7 +231,6 @@ class RoleAccessControlTest extends TestCase
             'institusi' => 'Telkom University',
         ]);
 
-        // Peserta B (Akun lain)
         $userOther = User::firstOrCreate(
             ['email' => 'other_user@event.test'],
             [
@@ -268,6 +259,9 @@ class RoleAccessControlTest extends TestCase
         // Peserta A mengakses datanya sendiri -> DIIZINKAN 200 OK
         $responseSelf = $this->actingAs($this->peserta)->get('/peserta/' . $pesertaA->id . '/edit');
         $responseSelf->assertStatus(200);
+
+        // Bersihkan data uji
+        $pesertaA->delete();
+        $pesertaB->delete();
     }
 }
-

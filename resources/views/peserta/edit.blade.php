@@ -79,14 +79,14 @@
             <div>
                 <label for="status_pembayaran" class="block font-semibold text-xs text-gray-700 mb-1">Status Pembayaran:</label>
                 <select name="status_pembayaran" id="status_pembayaran" 
-                        {{ in_array(Auth::user()->role ?? '', ['admin', 'panitia']) ? '' : 'disabled' }}
+                        {{ (Auth::user()->role ?? '') === 'admin' ? '' : 'disabled' }}
                         class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
                     <option value="Lunas" {{ old('status_pembayaran', $peserta->status_pembayaran) == 'Lunas' ? 'selected' : '' }}>Lunas</option>
                     <option value="Menunggu" {{ old('status_pembayaran', $peserta->status_pembayaran) == 'Menunggu' ? 'selected' : '' }}>Menunggu Konfirmasi</option>
                     <option value="Batal" {{ old('status_pembayaran', $peserta->status_pembayaran) == 'Batal' ? 'selected' : '' }}>Batal</option>
                 </select>
-                @if(!in_array(Auth::user()->role ?? '', ['admin', 'panitia']))
-                    <p class="text-[11px] text-gray-400 mt-1">Status pembayaran hanya dapat diubah oleh Panitia/Admin.</p>
+                @if((Auth::user()->role ?? '') !== 'admin')
+                    <p class="text-[11px] text-gray-400 mt-1">Status pembayaran hanya dapat diubah oleh Admin.</p>
                 @endif
             </div>
 

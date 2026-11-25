@@ -64,7 +64,7 @@ class AuthController extends Controller
             'nama'     => 'required|string|max:100',
             'email'    => 'required|string|email|max:100|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
-            'role'     => 'nullable|in:peserta,panitia,admin',
+            'role'     => 'nullable|in:peserta,admin',
         ]);
 
         $user = User::create([
